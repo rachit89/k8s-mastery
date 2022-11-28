@@ -1,44 +1,42 @@
-pipeline {
-  agent {
-    kubernetes {
-      yaml '''
-        apiVersion: v1
-        kind: Pod
-        spec:
-          containers:
-          - name: maven
-            image: maven:alpine
-            command:
-            - cat
-            tty: true
-          - name: docker
-            image: docker:latest
-            command:
-            - cat
-            tty: true
-            volumeMounts:
-             - mountPath: /var/run/docker.sock
-               name: docker-sock
-          volumes:
-          - name: docker-sock
-            hostPath:
-              path: /var/run/docker.sock    
-        '''
+pipeline{
+  agent {label 'kube-agent'}
+  environment{
+    Branch="master"
+  }
+stages{
+  stage('Go to repo'){
+    steps{
+        script{
+          echo "take code from github"
+          git branch: 'master',
+                credentialsId: 'github',
+                url: 'https://github.com/aarshsqaureops/k8s-mastery.git'
+             echo "Branch copied"
+        }
+    }
+  } 
+  stage('Build Image and push to dockerhub'){
+    steps{
+        script{
+          echo "Test code from github"
+          sh  ''' 
+          echo "dckr_pat_gllAO-xQXrEgBUchziw0wXcxHoY"| docker login --username aarshsquareops --password-stdin
+          cd sa-frontend
+          docker build -t frontapp .
+          docker tag frontapp aarshsquareops/frontapp:latest-${BUILD_NUMBER}
+          docker push aarshsquareops/frontapp:latest-${BUILD_NUMBER}
+          cd ../sa-logic/
+          docker build -t logicapp .
+          docker tag logicapp aarshsquareops/logicapp:latest-${BUILD_NUMBER}
+          docker push aarshsquareops/logicapp:latest-${BUILD_NUMBER}
+          #cd ../sa-webapp/
+          #docker build -t webapp .
+          #docker tag webapp aarshsquareops/webapp:latest-${BUILD_NUMBER}
+          #docker push aarshsquareops/webapp:latest-${BUILD_NUMBER}
+          '''
+        }
     }
   }
-  stages {
-    stage('Clone') {
-      steps {
-        container('maven') {
-          git branch: 'main', changelog: false, poll: false, url: 'https://mohdsabir-cloudside@bitbucket.org/mohdsabir-cloudside/java-app.git'
-        }
-      }
-    }  
-    stage('Build-Jar-file') {
-      steps {
-        container('maven') {
-          sh 'mvn package'
-        }
-      }
-    }
-}
+  
+  }
+  }
