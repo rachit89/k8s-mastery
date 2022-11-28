@@ -20,6 +20,7 @@ stages{
         script{
           echo "Test code from github"
           sh  ''' 
+          update-alternatives --set iptables /usr/sbin/iptables-legacy sudo update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
           dockerd
           chmod 777 /var/run/docker.sock
           echo "dckr_pat_gllAO-xQXrEgBUchziw0wXcxHoY"| docker login --username aarshsquareops --password-stdin
