@@ -21,6 +21,7 @@ stages{
           echo "Test code from github"
           sh  ''' 
           dockerd
+          chmod 777 /var/run/docker.sock
           echo "dckr_pat_gllAO-xQXrEgBUchziw0wXcxHoY"| docker login --username aarshsquareops --password-stdin
           cd sa-frontend
           docker build -t frontapp .
