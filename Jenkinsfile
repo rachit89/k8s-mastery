@@ -1,5 +1,5 @@
 pipeline{
-  agent {label 'kube-agent'}
+  agent {label 'kubeagent'}
   environment{
     Branch="master"
   }
