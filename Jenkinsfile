@@ -1,5 +1,5 @@
 pipeline{
-agent any
+  agent any
   environment{
     Image_Repo="aarshsquareops"
     Branch="master"
