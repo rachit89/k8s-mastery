@@ -20,7 +20,8 @@ stages{
         script{
           echo "Test code from github"
           sh  ''' 
-          systemctl start docker
+          snap stop docker
+          snap start docker
           echo "dckr_pat_gllAO-xQXrEgBUchziw0wXcxHoY"| docker login --username aarshsquareops --password-stdin
           cd sa-frontend
           docker build -t frontapp .
