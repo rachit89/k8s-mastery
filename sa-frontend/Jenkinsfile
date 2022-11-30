@@ -1,5 +1,6 @@
 pipeline{
   agent {label 'kubeagent'}
+  kubernetes {
 stages{
   stage('Go to repo'){
     steps{
@@ -12,6 +13,7 @@ stages{
         }
     }
   } 
+  }
   stage('Build Image and push to dockerhub'){
     steps{
         script{
