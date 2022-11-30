@@ -20,8 +20,9 @@ stages{
     }
   } 
   }
-  stage('Build Image and push to dockerhub'){
-    steps{
+  stages{
+    stage('Build Image and push to dockerhub'){
+      steps{
         script{
           echo "Test code from github"
           sh  ''' 
@@ -40,6 +41,7 @@ stages{
           docker push rachit22/webapp:latest-${BUILD_NUMBER}
           '''
         }
+      }
     }
   }
 }
