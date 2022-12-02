@@ -1,7 +1,7 @@
 pipeline {
   agent {
     kubernetes {
-      yaml '''
+     yaml '''
         apiVersion: v1
         kind: Pod
         spec:
@@ -24,8 +24,8 @@ pipeline {
             hostPath:
               path: /var/run/docker.sock
         '''
-    }
-  }
+       }
+   }
   stages {
     stage('Clone') {
       steps {
@@ -49,10 +49,10 @@ pipeline {
           docker build -t logicapp .
           docker tag logicapp rachit22/logicapp-test:latest-${BUILD_NUMBER}
           docker push rachit22/logicapp-test:latest-${BUILD_NUMBER}
-          #cd ../sa-webapp/
-          #docker build -t webapp .
-          #docker tag webapp rachit22/webapp-test:latest-${BUILD_NUMBER}
-          #docker push rachit22/webapp-test:latest-${BUILD_NUMBER}
+          cd ../sa-webapp/
+          docker build -t webapp .
+          docker tag webapp rachit22/webapp-test:latest-${BUILD_NUMBER}
+          docker push rachit22/webapp-test:latest-${BUILD_NUMBER}
           '''
         }
         }
