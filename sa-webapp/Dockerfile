@@ -1,9 +1,9 @@
-FROM maven:3.8.6-openjdk-18 AS builder
-COPY pom.xml /sa-webapp/pom.xml
-WORKDIR  RUN mvn clean && mvn package
-COPY src /sa-webapp/src
+FROM maven AS builder
+COPY . /sa-webapp
+WORKDIR /sa-webapp
+RUN mvn install
 ENV SA_LOGIC_API_URL http://localhost:5000
 FROM openjdk:8-jre-alpine
-ADD target/sentiment-analysis-web-0.0.1-SNAPSHOT.jar /
+COPY --from=builder /sa-webapp/target/sentiment-analysis-web-0.0.1-SNAPSHOT.jar ./
 EXPOSE 8080
 CMD ["java", "-jar", "sentiment-analysis-web-0.0.1-SNAPSHOT.jar", "--sa.logic.api.url=${SA_LOGIC_API_URL}"]
