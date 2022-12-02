@@ -1,6 +1,6 @@
 FROM maven:3.8.6-openjdk-18 AS builder
 COPY pom.xml /sa-webapp/pom.xml
-WORKDIR  RUN mvn clean
+WORKDIR  RUN mvn clean && mvn package
 COPY src /sa-webapp/src
 ENV SA_LOGIC_API_URL http://localhost:5000
 FROM openjdk:8-jre-alpine
