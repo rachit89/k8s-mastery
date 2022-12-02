@@ -1,7 +1,7 @@
 FROM maven:3.5-jdk-8-alpine AS builder
 COPY pom.xml /sa-webapp/pom.xml
 WORKDIR k8s-mastery/sa-webapp/
-RUN mvn clean package
+RUN mvn install && mvn clean package
 COPY src /sa-webapp/src
 ENV SA_LOGIC_API_URL http://localhost:5000
 FROM openjdk:8-jre-alpine
