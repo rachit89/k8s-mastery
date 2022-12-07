@@ -55,8 +55,8 @@ pipeline {
           docker push rachit22/webapp-test:latest-${BUILD_NUMBER}
           '''
         }
-        }
-      }
-    }
-  }
-  }
+       }
+     }
+   }
+}
+}
