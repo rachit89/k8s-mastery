@@ -65,7 +65,7 @@ pipeline {
         	sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
             sh 'docker push rachit22/frontapp-test:latest-${BUILD_NUMBER}'
             sh 'docker push rachit22/logicapp-test:latest-${BUILD_NUMBER}'
-            sh 'docker push rachit22/webapp-test:latest-${BUILD_NUMBER}' stage('Docker Push')
+            sh 'docker push rachit22/webapp-test:latest-${BUILD_NUMBER}'
         }
        }
      }
