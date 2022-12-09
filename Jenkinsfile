@@ -57,8 +57,11 @@ pipeline {
           docker tag webapp rachit22/webapp-test:latest-${BUILD_NUMBER}
           ##docker push rachit22/webapp-test:latest-${BUILD_NUMBER}
           '''
+         }
         }
+      }
 	stage('Docker Push') {
+        container('docker') {
        steps {   
       	withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
         	sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
@@ -69,7 +72,4 @@ pipeline {
        }
      }
    }
-}
-}
-}
 }
