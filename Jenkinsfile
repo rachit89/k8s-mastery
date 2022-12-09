@@ -1,9 +1,7 @@
-properties([pipelineTriggers([githubPush()])])
-
 pipeline {
   agent {
     kubernetes {
-     yaml '''
+      yaml '''
         apiVersion: v1
         kind: Pod
         spec:
@@ -26,44 +24,39 @@ pipeline {
             hostPath:
               path: /var/run/docker.sock
         '''
-       }
-   }
-	
+    }
+  }
   stages {
-   stage('Clone') {
+    stage('Clone') {
       steps {
         container('maven') {
-          git branch: 'master', changelog: false, poll: false, url: 'https://github.com/rachit89/k8s-mastery.git'
+          git branch: 'master', changelog: false, poll: false, url: 'https://github.com/rachit22/k8s-mastery.git'
         }
       }
     }
 	stage('Build-Docker-Image') {
       steps {
         container('docker') {
+		  script{
           echo "Test code from github"
           sh  '''
-	  withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-            echo "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-          ## echo "Rachit@2050"| docker login --username rachit22 --password-stdin
+          echo "Guitarstars@134"| docker login --username rachit22 --password-stdin
           cd sa-frontend
           docker build -t frontapp .
-          docker tag frontapp ${env.dockerHubUser}/frontapp-test:latest-${BUILD_NUMBER}
-	  docker push ${env.dockerHubUser}/frontapp-test:latest-${BUILD_NUMBER}
-          ##docker push ${env.dockerHubUser}/frontapp-test:latest-${BUILD_NUMBER}
+          docker tag frontapp rachit22/frontapp-test:latest-${BUILD_NUMBER}
+          docker push rachit22/frontapp-test:latest-${BUILD_NUMBER}
           cd ../sa-logic/
           docker build -t logicapp .
-          docker tag logicapp ${env.dockerHubUser}/logicapp-test:latest-${BUILD_NUMBER}
-	  docker push ${env.dockerHubUser}/logicapp-test:latest-${BUILD_NUMBER}
-          ##docker push rachit22/logicapp-test:latest-${BUILD_NUMBER}
+          docker tag logicapp rachit22/logicapp-test:latest-${BUILD_NUMBER}
+          docker push rachit22/logicapp-test:latest-${BUILD_NUMBER}
           cd ../sa-webapp/
           docker build -t webapp .
-          docker tag webapp ${env.dockerHubUser}/webapp-test:latest-${BUILD_NUMBER}
-	  docker push ${env.dockerHubUser}/webapp-test:latest-${BUILD_NUMBER}
-          ##docker push rachit22/webapp-test:latest-${BUILD_NUMBER}
-	    '''
-	 }
-	  
+          docker tag webapp rachit22/webapp-test:latest-${BUILD_NUMBER}
+          docker push rachit22/webapp-test:latest-${BUILD_NUMBER}
+          '''
         }
-       }
-     }
-    }		  
+        }
+      }
+    }
+  }
+  }
