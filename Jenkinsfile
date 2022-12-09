@@ -28,6 +28,11 @@ pipeline {
         '''
        }
    }
+	
+  environment {
+      dockerhub=credentials{'dockerhub'}
+  }
+	
   stages {
     stage('Clone') {
       steps {
@@ -42,7 +47,7 @@ pipeline {
 		  script{
           echo "Test code from github"
           sh  '''
-          echo "Rachit@2050"| docker login --username rachit22 --password-stdin
+          ## echo "Rachit@2050"| docker login --username rachit22 --password-stdin
           cd sa-frontend
           docker build -t frontapp .
           docker tag frontapp rachit22/frontapp-test:latest-${BUILD_NUMBER}
