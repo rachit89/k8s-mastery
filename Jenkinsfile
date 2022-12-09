@@ -40,8 +40,7 @@ pipeline {
 	stage('Build-Docker-Image') {
       steps {
         container('docker') {
-	##	  script{
-         ## echo "Test code from github"
+          echo "Test code from github"
           sh  '''
 	  withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
             echo "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
@@ -64,7 +63,7 @@ pipeline {
 	    '''
 	 }
 	  
-      ##  }
+        }
        }
      }
     }		  
