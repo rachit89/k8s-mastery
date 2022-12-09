@@ -59,9 +59,9 @@ pipeline {
           '''
       	withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
             echo "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-            docker push rachit22/frontapp-test:latest-${BUILD_NUMBER}
-            docker push rachit22/logicapp-test:latest-${BUILD_NUMBER}
-            docker push rachit22/webapp-test:latest-${BUILD_NUMBER}
+            docker push dockerHubUser/frontapp-test:latest-${BUILD_NUMBER}
+            docker push dockerHubUser/logicapp-test:latest-${BUILD_NUMBER}
+            docker push dockerHubUser/webapp-test:latest-${BUILD_NUMBER}
 	    '''
 	 }
 	  
