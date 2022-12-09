@@ -30,7 +30,7 @@ pipeline {
     stage('Clone') {
       steps {
         container('maven') {
-          git branch: 'master', changelog: false, poll: false, url: 'https://github.com/rachit22/k8s-mastery.git'
+          git branch: 'master', changelog: false, poll: false, url: 'https://github.com/rachit89/k8s-mastery.git'
         }
       }
     }
@@ -40,7 +40,7 @@ pipeline {
 		  script{
           echo "Test code from github"
           sh  '''
-          echo "Guitarstars@134"| docker login --username rachit22 --password-stdin
+          echo "dckr_pat_m1YMEVgpd4v_yefgNCtLr5-sZOM"| docker login --username rachit22 --password-stdin
           cd sa-frontend
           docker build -t frontapp .
           docker tag frontapp rachit22/frontapp-test:latest-${BUILD_NUMBER}
