@@ -29,10 +29,6 @@ pipeline {
        }
    }
 	
-  environment {
-      dockerhub = credentials('dockerhub')
-  }
-	
   stages {
     stage('Clone') {
       steps {
@@ -51,20 +47,27 @@ pipeline {
           cd sa-frontend
           docker build -t frontapp .
           docker tag frontapp rachit22/frontapp-test:latest-${BUILD_NUMBER}
-          docker push rachit22/frontapp-test:latest-${BUILD_NUMBER}
+          ##docker push rachit22/frontapp-test:latest-${BUILD_NUMBER}
           cd ../sa-logic/
           docker build -t logicapp .
           docker tag logicapp rachit22/logicapp-test:latest-${BUILD_NUMBER}
-          docker push rachit22/logicapp-test:latest-${BUILD_NUMBER}
+          ##docker push rachit22/logicapp-test:latest-${BUILD_NUMBER}
           cd ../sa-webapp/
           docker build -t webapp .
           docker tag webapp rachit22/webapp-test:latest-${BUILD_NUMBER}
-          docker push rachit22/webapp-test:latest-${BUILD_NUMBER}
+          ##docker push rachit22/webapp-test:latest-${BUILD_NUMBER}
           '''
         }
+	stage('Docker Push') {
+       steps {   
+      	withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+        	sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+          sh 'docker push rachit22/frontapp-test:latest-${BUILD_NUMBER}'
+          sh 'docker push rachit22/logicapp-test:latest-${BUILD_NUMBER}'
+          sh 'docker push rachit22/webapp-test:latest-${BUILD_NUMBER}'
+        }		   
        }
      }
    }
 }
 }
-
