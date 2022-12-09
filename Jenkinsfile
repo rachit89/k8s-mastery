@@ -43,24 +43,24 @@ pipeline {
 		  script{
           echo "Test code from github"
           sh  '''
+	  withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+            echo "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
           ## echo "Rachit@2050"| docker login --username rachit22 --password-stdin
           cd sa-frontend
           docker build -t frontapp .
-          docker tag frontapp rachit22/frontapp-test:latest-${BUILD_NUMBER}
-          ##docker push rachit22/frontapp-test:latest-${BUILD_NUMBER}
+          docker tag frontapp ${env.dockerHubUser}/frontapp-test:latest-${BUILD_NUMBER}
+	  docker push ${env.dockerHubUser}/frontapp-test:latest-${BUILD_NUMBER}
+          ##docker push ${env.dockerHubUser}/frontapp-test:latest-${BUILD_NUMBER}
           cd ../sa-logic/
           docker build -t logicapp .
-          docker tag logicapp rachit22/logicapp-test:latest-${BUILD_NUMBER}
+          docker tag logicapp ${env.dockerHubUser}/logicapp-test:latest-${BUILD_NUMBER}
+	  docker push ${env.dockerHubUser}/logicapp-test:latest-${BUILD_NUMBER}
           ##docker push rachit22/logicapp-test:latest-${BUILD_NUMBER}
           cd ../sa-webapp/
           docker build -t webapp .
-          docker tag webapp rachit22/webapp-test:latest-${BUILD_NUMBER}
+          docker tag webapp ${env.dockerHubUser}/webapp-test:latest-${BUILD_NUMBER}
+	  docker push ${env.dockerHubUser}/webapp-test:latest-${BUILD_NUMBER}
           ##docker push rachit22/webapp-test:latest-${BUILD_NUMBER}
-      	withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-            echo "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-            docker push ${env.dockerHubUser}/frontapp-test:latest-${BUILD_NUMBER}
-            docker push ${env.dockerHubUser}/logicapp-test:latest-${BUILD_NUMBER}
-            docker push ${env.dockerHubUser}/webapp-test:latest-${BUILD_NUMBER}
 	    '''
 	 }
 	  
