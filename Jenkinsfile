@@ -61,8 +61,8 @@ pipeline {
         }
       }
 	stage('Docker Push') {
-        container('docker') {
        steps {   
+        container('docker') {
       	withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
         	sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
           sh 'docker push rachit22/frontapp-test:latest-${BUILD_NUMBER}'
