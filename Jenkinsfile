@@ -30,7 +30,7 @@ pipeline {
    }
 	
   environment {
-      dockerhub=credentials{'dockerhub'}
+      dockerhub = credentials{'dockerhub'}
   }
 	
   stages {
