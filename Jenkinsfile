@@ -58,7 +58,7 @@ pipeline {
           ##docker push rachit22/webapp-test:latest-${BUILD_NUMBER}
           '''
       	withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-            docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}
+            echo "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
             docker push rachit22/frontapp-test:latest-${BUILD_NUMBER}
             docker push rachit22/logicapp-test:latest-${BUILD_NUMBER}
             docker push rachit22/webapp-test:latest-${BUILD_NUMBER}
